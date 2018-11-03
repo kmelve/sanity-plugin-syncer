@@ -1,4 +1,3 @@
-require('dotenv').config()
 const axios = require("axios");
 const sanityClient = require('@sanity/client')
 const client = token => sanityClient({
@@ -9,9 +8,7 @@ const client = token => sanityClient({
 const NPM_API = "https://api.npms.io/v2/search/suggestions"
 
 module.exports = async function(context, cb) {
-  const results = await axios(NPM_API + '?q=sanity-plugin').then(({
-    data
-  }) => data)
+  const results = await axios(NPM_API + '?q=sanity-plugin').then(({data}) => data)
   const preparedResults = results
     .filter(({
       package: {
