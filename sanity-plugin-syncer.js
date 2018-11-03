@@ -14,7 +14,7 @@ module.exports = async function(context, cb) {
     .map(({ package }) => ({
       ...package,
       _id: package.name,
-      _type: 'sanity-plugin',
+      _type: 'plugin',
       links: {
         _type: 'links',
         ...package.links
