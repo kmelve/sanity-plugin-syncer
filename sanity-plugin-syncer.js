@@ -11,9 +11,7 @@ module.exports = async function(context, cb) {
   const results = await axios(NPM_API + '?q=sanity-plugin').then(({data}) => data)
   const preparedResults = results
     .filter(({package: {name}}) => name.match(/^sanity-plugin/))
-    .map(({
-      package
-    }) => ({
+    .map(({ package }) => ({
       ...package,
       _id: package.name,
       _type: 'sanity-plugin',
