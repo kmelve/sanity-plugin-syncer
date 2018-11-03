@@ -35,4 +35,5 @@ module.exports = async function(context, cb) {
 
   const res = await preparedResults.reduce((trans, doc) => trans.createOrReplace(doc), client(context.secrets.API_TOKEN).transaction()).commit()
   console.log(res)
+  cv()
 }
