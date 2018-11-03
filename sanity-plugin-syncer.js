@@ -10,11 +10,7 @@ const NPM_API = "https://api.npms.io/v2/search/suggestions"
 module.exports = async function(context, cb) {
   const results = await axios(NPM_API + '?q=sanity-plugin').then(({data}) => data)
   const preparedResults = results
-    .filter(({
-      package: {
-        name
-      }
-    }) => name.match(/^sanity-plugin/))
+    .filter(({package: {name}}) => name.match(/^sanity-plugin/))
     .map(({
       package
     }) => ({
