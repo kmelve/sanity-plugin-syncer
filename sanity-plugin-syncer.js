@@ -19,10 +19,7 @@ module.exports = async function(context, cb) {
         _type: 'links',
         ...package.links
       },
-      author: {
-        _type: "author",
-        ...package.author
-      },
+      author: package.author.name,
       publisher: {
         _type: "publisher",
         ...package.publisher
