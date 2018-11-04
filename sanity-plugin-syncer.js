@@ -41,7 +41,7 @@ module.exports = async function(context, cb) {
         ...package.publisher
       },
       maintainers: package.maintainers.map(maintainer => ({
-        _type: "maintainer",
+        _type: "pkgMaintainer",
         ...maintainer
       }))
     }))
