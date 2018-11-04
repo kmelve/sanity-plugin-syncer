@@ -31,7 +31,7 @@ module.exports = async function(context, cb) {
       _id: package.name,
       _type: 'plugin',
       links: {
-        _type: 'links',
+        _type: 'pkgLinks',
         ...package.links
       },
       readme: readMesMap[package.name],
