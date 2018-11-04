@@ -34,6 +34,7 @@ module.exports = async function(context, cb) {
         _type: 'links',
         ...package.links
       },
+      readme: readMesMap[package.name],
       pkgAuthor: package.author ? package.author.name : 'Missing',
       publisher: {
         _type: "publisher",
@@ -42,8 +43,7 @@ module.exports = async function(context, cb) {
       maintainers: package.maintainers.map(maintainer => ({
         _type: "maintainer",
         ...maintainer
-      })),
-      readme: readMesMap[package.name]
+      }))
     }))
   
 
