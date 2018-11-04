@@ -20,7 +20,7 @@ function getReadmes(pkgs) {
 }
 
 module.exports = async function(context, cb) {
-  const pkgs = await axios(NPM_API_SEARCH + '?q=sanity-plugin').then(({data}) => data)
+  const pkgs = await axios(NPM_API_SEARCH + '?q=sanity-plugin&size=100').then(({data}) => data)
   const readMeResults = await Promise.all(getReadmes(pkgs))
   const readMesMap = readMeResults.reduce((acc, curr) => ({ ...acc, [curr.name]: curr.readme }), {})
 
