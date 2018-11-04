@@ -16,7 +16,7 @@ function getReadmes(pkgs) {
     .map(({ package }) => {
       return axios(NPM_API_PGKINFO + package.name)
         .then(({data: { collected: { metadata }}}) => ({ name: metadata.name, readme: metadata.readme}))
-    }
+    })
 }
 module.exports = async function(context, cb) {
   const pkgs = await axios(NPM_API_SEARCH + '?q=sanity-plugin').then(({data}) => data)
