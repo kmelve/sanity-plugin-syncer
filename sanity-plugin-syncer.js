@@ -10,9 +10,12 @@ const NPM_API_PGKINFO = "https://api.npms.io/v2/package/"
 function checkIfPlugin({package: {name}}) {
   return name.match(/^sanity-plugin/)
 }
+function getReadmes(pkgs) {
+  return pkgs.filter(checkIfPlugin).map(({ package }) => axios(NPM_API_PGKINFO + package.name).then(({data: { collected: { metadata }}}) => ({ name: metadata.name, readme: metadata.readme}))
+}
 module.exports = async function(context, cb) {
-  const results = await axios(NPM_API_SEARCH + '?q=sanity-plugin').then(({data}) => data)
-  const readMeResults = await Promise.all(results.filter(checkIfPlugin).map(({ package }) => axios(NPM_API_PGKINFO + package.name).then(({data: { collected: { metadata }}}) => ({ name: metadata.name, readme: metadata.readme})))
+  const pkgs = await axios(NPM_API_SEARCH + '?q=sanity-plugin').then(({data}) => data)
+  const readMeResults = await Promise.all(getReadmes(pkgs))
   const readMesMap = readMeResults.reduce((acc, curr) => ({ ...acc, [curr.name]: curr.readme }))
   console.log(readMesMap)
   return cb({readMesMap})
