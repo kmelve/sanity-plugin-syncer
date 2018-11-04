@@ -40,8 +40,9 @@ module.exports = async function(context, cb) {
         _type: "publisher",
         ...package.publisher
       },
-      maintainers: package.maintainers.map(maintainer => ({
+      maintainers: package.maintainers.map((maintainer, i) => ({
         _type: "pkgMaintainer",
+        _key: 'pkgMaintainer' + i + maintainer.username,
         ...maintainer
       }))
     }))
