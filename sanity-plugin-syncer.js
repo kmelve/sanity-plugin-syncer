@@ -14,8 +14,8 @@ module.exports = async function(context, cb) {
   const results = await axios(NPM_API_SEARCH + '?q=sanity-plugin').then(({data}) => data)
   const readMeResults = await Promise.all(results.filter(checkIfPlugin).map(({ package }) => axios(NPM_API_PGKINFO + package.name).then(({data: { collected: { metadata }}}) => ({ name: metadata.name, readme: metadata.readme})))
   const readMesMap = readMeResults.reduce((acc, curr) => ({ ...acc, [curr.name]: curr.readme }))
-  console.log(readMes)
-  return cb({readMes})
+  console.log(readMesMap)
+  return cb({readMesMap})
   /*
   const preparedResults = results
     .filter(checkIfPlugin)
