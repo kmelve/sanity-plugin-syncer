@@ -10,9 +10,11 @@ const NPM_API_PGKINFO = "https://api.npms.io/v2/package/"
 
 module.exports = async function(context, cb) {
   const results = await axios(NPM_API_SEARCH + '?q=sanity-plugin').then(({data}) => data)
-  const readMes = await Promise.all(results.map(({package: { name }}) => axios(NPM_API_PGKINFO + name)))
+  console.log(results)
+  const readMes = await Promise.all(results.map(({package: { name }}) => console.log(name)))
   console.log(readMes)
   return cb(200)
+  /*
   const preparedResults = results
     .filter(({package: {name}}) => name.match(/^sanity-plugin/))
     .map(({ package }) => ({
@@ -39,4 +41,5 @@ module.exports = async function(context, cb) {
   const res = await preparedResults.reduce((trans, doc) => trans.createOrReplace(doc), client(context.secrets.API_TOKEN).transaction()).commit().catch(() => cb(500))
   console.log(res)
   cb(200)
+  */
 }
