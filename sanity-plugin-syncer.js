@@ -7,16 +7,18 @@ const client = token => sanityClient({
 })
 const NPM_API_SEARCH = "https://api.npms.io/v2/search/suggestions"
 const NPM_API_PGKINFO = "https://api.npms.io/v2/package/"
-
+function checkIfPlugin({package: {name}}) {
+  return name.match(/^sanity-plugin/)
+}
 module.exports = async function(context, cb) {
   const results = await axios(NPM_API_SEARCH + '?q=sanity-plugin').then(({data}) => data)
   console.log(results)
-  const readMes = await Promise.all(results.map(({package: { name }}) => console.log(name)))
+  const readMes = await Promise.all(results.filter(checkIfPlugin).map(({ package }) => console.log(package)))
   console.log(readMes)
   return cb(200)
   /*
   const preparedResults = results
-    .filter(({package: {name}}) => name.match(/^sanity-plugin/))
+    .filter(checkIfPlugin)
     .map(({ package }) => ({
       ...package,
       _id: package.name,
