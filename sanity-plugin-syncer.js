@@ -12,7 +12,6 @@ function checkIfPlugin({package: {name}}) {
 }
 module.exports = async function(context, cb) {
   const results = await axios(NPM_API_SEARCH + '?q=sanity-plugin').then(({data}) => data)
-  console.log(results)
   const readMes = await Promise.all(results.filter(checkIfPlugin).map(({ package }) => console.log(package)))
   console.log(readMes)
   return cb(200)
