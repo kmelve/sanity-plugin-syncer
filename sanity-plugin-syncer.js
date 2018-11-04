@@ -34,7 +34,7 @@ module.exports = async function(context, cb) {
         _type: 'links',
         ...package.links
       },
-      author: package.author ? package.author.name : 'Missing',
+      pkgAuthor: package.author ? package.author.name : 'Missing',
       publisher: {
         _type: "publisher",
         ...package.publisher
