@@ -46,7 +46,7 @@ module.exports = async function(context, cb) {
     }))
   
 
-  
+  return cb(200, {preparedResults})
   const res = await preparedResults.reduce((trans, doc) => trans.createOrReplace(doc), client(context.secrets.API_TOKEN).transaction()).commit().catch(() => cb(500))
   console.log(res)
   cb(200)
