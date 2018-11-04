@@ -22,10 +22,8 @@ module.exports = async function(context, cb) {
   const pkgs = await axios(NPM_API_SEARCH + '?q=sanity-plugin').then(({data}) => data)
   const readMeResults = await Promise.all(getReadmes(pkgs))
   const readMesMap = readMeResults.reduce((acc, curr) => ({ ...acc, [curr.name]: curr.readme }), {})
-  console.log(readMesMap)
-  return cb({readMesMap})
-  /*
-  const preparedResults = results
+
+  const preparedResults = pkgs
     .filter(checkIfPlugin)
     .map(({ package }) => ({
       ...package,
@@ -43,7 +41,8 @@ module.exports = async function(context, cb) {
       maintainers: package.maintainers.map(maintainer => ({
         _type: "maintainer",
         ...maintainer
-      }))
+      })),
+      readme: readMesMap[package.name]
     }))
   
 
