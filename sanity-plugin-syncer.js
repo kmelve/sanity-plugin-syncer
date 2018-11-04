@@ -8,7 +8,6 @@ const client = token => sanityClient({
 const NPM_API_SEARCH = "https://api.npms.io/v2/search/suggestions"
 const NPM_API_PGKINFO = "https://api.npms.io/v2/package/"
 function checkIfPlugin({package: {name}}) {
-  console.log(name)
   return name.match(/^sanity-plugin/)
 }
 function getReadmes(pkgs) {
@@ -19,6 +18,7 @@ function getReadmes(pkgs) {
         .then(({data: { collected: { metadata }}}) => ({ name: metadata.name, readme: metadata.readme}))
     })
 }
+
 module.exports = async function(context, cb) {
   const pkgs = await axios(NPM_API_SEARCH + '?q=sanity-plugin').then(({data}) => data)
   const readMeResults = await Promise.all(getReadmes(pkgs))
