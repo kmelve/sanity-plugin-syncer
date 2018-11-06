@@ -50,12 +50,13 @@ module.exports = async function(context, cb) {
         }))  
       }
     }))
-  //const res = await preparedResults.reduce((trans, doc) => trans.createOrReplace(doc), client(context.secrets.API_TOKEN).transaction()).commit().catch(() => cb(null, 500))
-
+  const newDocs = await preparedResults.reduce((trans, doc) => trans.createIfMissing(doc), client(context.secrets.API_TOKEN).transaction()).commit().catch(() => cb(null, 500))
+  console.log({newDocs})
   const res = await preparedResults.reduce((trans, doc) => trans
       .patch(doc._id)
       .setIfMissing({npm: {}})
       .set({npm: doc.npm}),
-    client(context.secrets.API_TOKEN).transaction()).commit().catch(() => cb(null, 500))
+    client(context.secrets.API_TOKEN).transaction()).commit()
+  
   cb(null, 200)
 }
