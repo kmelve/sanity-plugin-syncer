@@ -31,23 +31,34 @@ module.exports = async function(context, cb) {
       ...package,
       _id: package.name,
       _type: 'plugin',
-      links: {
-        _type: 'pkgLinks',
-        ...package.links
-      },
-      readme: readMesMap[package.name],
-      pkgAuthor: package.author ? package.author.name : 'Missing',
-      publisher: {
-        _type: "publisher",
-        ...package.publisher
-      },
-      maintainers: package.maintainers.map((maintainer, i) => ({
-        _type: "pkgMaintainer",
-        _key: 'pkgMaintainer' + i + maintainer.username,
-        ...maintainer
-      }))
+      npm: {
+        _type: 'npm',
+        links: {
+          _type: 'pkgLinks',
+          ...package.links
+        },
+        readme: readMesMap[package.name],
+        pkgAuthor: package.author ? package.author.name : 'Missing',
+        publisher: {
+          _type: "publisher",
+          ...package.publisher
+        },
+        maintainers: package.maintainers.map((maintainer, i) => ({
+          _type: "pkgMaintainer",
+          _key: 'pkgMaintainer' + i + maintainer.username,
+          ...maintainer
+        }))  
+      }
     }))
 
-  const res = await preparedResults.reduce((trans, doc) => trans.createOrReplace(doc), client(context.secrets.API_TOKEN).transaction()).commit().catch(() => cb(null, 500))
+  const res = await preparedResults.reduce((trans, doc) => (
+    trans
+      .createIfNotExists(doc._id)
+      .patch(doc._id)
+      .set({npm: doc.npm}),
+    client(context.secrets.API_TOKEN)
+      .transaction())
+      .commit().catch(() => cb(null, 500))
+    )
   cb(null, 200)
 }
