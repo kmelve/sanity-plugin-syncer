@@ -39,7 +39,6 @@ module.exports = async function(context, cb) {
           ...package.links
         },
         readme: readMesMap[package.name],
-        pkgAuthor: package.author ? package.author.name : 'Missing',
         publisher: {
           _type: "publisher",
           ...package.publisher
