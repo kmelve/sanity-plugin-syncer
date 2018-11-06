@@ -51,14 +51,16 @@ module.exports = async function(context, cb) {
       }
     }))
 
-  const res = await preparedResults.reduce((trans, doc) => (
-    trans
-      .createIfNotExists(doc._id)
+  const res = await preparedResults.reduce(async (trans, doc) => {
+    await client.createIfNotExists(doc._id)
+    return await 
+      trans
       .patch(doc._id)
+      .setIfMissing({npm: {}})
       .set({npm: doc.npm}),
     client(context.secrets.API_TOKEN)
-      .transaction())
+      .transaction()
       .commit().catch(() => cb(null, 500))
-    )
+  })
   cb(null, 200)
 }
