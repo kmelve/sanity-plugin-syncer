@@ -53,7 +53,7 @@ module.exports = async function(context, cb) {
 
   const res = await preparedResults.reduce((trans, doc) => {
     return trans
-      .createIfNotExists(doc._id)
+      .create(doc._id)
       .patch(doc._id)
       .setIfMissing({npm: {}})
       .set({npm: doc.npm}),
