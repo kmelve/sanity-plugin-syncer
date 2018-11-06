@@ -30,6 +30,7 @@ module.exports = async function(context, cb) {
     .map(({ package }) => ({
       _id: package.name,
       _type: 'plugin',
+      installWith: package.name.split('sanity-plugin-')[1],
       name: package.name,
       npm: {
         ...package,
