@@ -51,9 +51,9 @@ module.exports = async function(context, cb) {
       }
     }))
 
-  const res = await preparedResults.reduce(async (trans, doc) => {
+  const res = await preparedResults.reduce((trans, doc) => {
     // await client.createIfNotExists(doc._id)
-    return await 
+    return  
       trans
       .patch(doc._id)
       .setIfMissing({npm: {}})
