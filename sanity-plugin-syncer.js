@@ -50,15 +50,12 @@ module.exports = async function(context, cb) {
         }))  
       }
     }))
+  //const res = await preparedResults.reduce((trans, doc) => trans.createOrReplace(doc), client(context.secrets.API_TOKEN).transaction()).commit().catch(() => cb(null, 500))
 
-  const res = await preparedResults.reduce((trans, doc) => {
-    // await client.createIfNotExists(doc._id)
-    return trans
+  const res = await preparedResults.reduce((trans, doc) => trans
       .patch(doc._id)
       .setIfMissing({npm: {}})
       .set({npm: doc.npm}),
-    client(context.secrets.API_TOKEN)
-      .transaction().commit().catch(() => cb(null, 500))
-  })
+    client(context.secrets.API_TOKEN).transaction()).commit().catch(() => cb(null, 500))
   cb(null, 200)
 }
