@@ -58,6 +58,6 @@ module.exports = async function(context, cb) {
       .set({npm: doc.npm}),
     client(context.secrets.API_TOKEN).transaction()
   ).commit()
-  
+  console.log({res})
   cb(null, 200)
 }
