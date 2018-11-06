@@ -30,6 +30,7 @@ module.exports = async function(context, cb) {
     .map(({ package }) => ({
       _id: package.name,
       _type: 'plugin',
+      name: package.name,
       npm: {
         ...package,
         _type: 'npm',
