@@ -55,7 +55,6 @@ module.exports = async function(context, cb) {
   console.log({newDocs})
   const res = await preparedResults.reduce((trans, doc) => trans
       .patch(doc._id)
-      .setIfMissing({npm: {}})
       .set({npm: doc.npm}),
     client(context.secrets.API_TOKEN).transaction()
   ).commit()
