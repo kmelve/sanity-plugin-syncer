@@ -28,10 +28,10 @@ module.exports = async function(context, cb) {
   const preparedResults = pkgs
     .filter(checkIfPlugin)
     .map(({ package }) => ({
-      ...package,
       _id: package.name,
       _type: 'plugin',
       npm: {
+        ...package,
         _type: 'npm',
         links: {
           _type: 'pkgLinks',
