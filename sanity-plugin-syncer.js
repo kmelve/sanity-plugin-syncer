@@ -5,11 +5,13 @@ const client = token => sanityClient({
   dataset: 'production',
   token
 })
+
 const NPM_API_SEARCH = "https://api.npms.io/v2/search/suggestions"
 const NPM_API_PGKINFO = "https://api.npms.io/v2/package/"
 function checkIfPlugin({package: {name}}) {
   return name.match(/^sanity-plugin/)
 }
+
 function getReadmes(pkgs) {
   return pkgs
     .filter(checkIfPlugin)
@@ -51,6 +53,7 @@ module.exports = async function(context, cb) {
         }))  
       }
     }))
+
   const res = await preparedResults
     .reduce((trans, doc) => 
       trans
