@@ -46,7 +46,8 @@ module.exports = async function(context, cb) {
           _type: "publisher",
           pluginAuthor: {
             _type: 'reference',
-            _ref: `pluginAuthor-${(package.publisher || {}).username}`
+            _ref: `pluginAuthor-${(package.publisher || {}).username}`,
+            _weak: true
           },
           ...package.publisher
         },
