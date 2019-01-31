@@ -44,6 +44,10 @@ module.exports = async function(context, cb) {
         readme: readMesMap[package.name],
         publisher: {
           _type: "publisher",
+          pluginAuthor: {
+            _type: 'reference',
+            _ref: `pluginAuthor-${(package.publisher || {}).username}`
+          },
           ...package.publisher
         },
         maintainers: package.maintainers.map((maintainer, i) => ({
