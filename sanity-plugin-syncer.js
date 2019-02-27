@@ -14,7 +14,7 @@ function checkIfPlugin ({ package: { name } }) {
 }
 
 function getReadmes (pkgs) {
-  return pkgs.filter(checkIfPlugin).map(({ npmPackage }) => {
+  return pkgs.filter(checkIfPlugin).map(({ package: npmPackage }) => {
     return axios(NPM_API_PGKINFO + npmPackage.name).then(
       ({ data: { collected: { metadata } } }) => ({
         name: metadata.name,
