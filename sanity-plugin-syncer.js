@@ -15,8 +15,8 @@ function checkIfPlugin({package: {name}}) {
 function getReadmes(pkgs) {
   return pkgs
     .filter(checkIfPlugin)
-    .map(({ package }) => {
-      return axios(NPM_API_PGKINFO + package.name)
+    .map(({ npmPackage }) => {
+      return axios(NPM_API_PGKINFO + npmPackage.name)
         .then(({data: { collected: { metadata }}}) => ({ name: metadata.name, readme: metadata.readme}))
     })
 }
@@ -29,35 +29,36 @@ module.exports = async function(context, cb) {
 
   const preparedResults = pkgs
     .filter(checkIfPlugin)
-    .map(({ package }) => ({
-      _id: package.name,
+    .map(({ npmPackage }) => ({
+      _id: npmPackage.name,
       _type: 'plugin',
-      installWith: package.name.split('sanity-plugin-')[1],
-      name: package.name,
+      installWith: npmPackage.name.split('sanity-plugin-')[1],
+      name: npmPackage.name,
       npm: {
-        ...package,
+        ...npmPackage,
         _type: 'npm',
         links: {
           _type: 'pkgLinks',
-          ...package.links
+          ...npmPackage.links
         },
-        readme: readMesMap[package.name],
+        readme: readMesMap[npmPackage.name],
         publisher: {
           _type: "publisher",
-          ...(package.publisher && {pluginAuthor: {
+          ...(npmPackage.publisher && {pluginAuthor: {
             _type: 'reference',
-            _ref: `pluginAuthor-${(package.publisher || {}).username}`,
+            _ref: `pluginAuthor-${(npmPackage.publisher || {}).username}`,
             _weak: true
           },
-          ...package.publisher
+          ...npmPackage.publisher
         }),
-        maintainers: package.maintainers.map((maintainer, i) => ({
+        maintainers: npmPackage.maintainers.map((maintainer, i) => ({
           _type: "pkgMaintainer",
           _key: 'pkgMaintainer' + i + maintainer.username,
           ...maintainer
         }))  
       }
-    }))
+    }
+    ))
 
   const res = await preparedResults
     .reduce((trans, doc) => 
