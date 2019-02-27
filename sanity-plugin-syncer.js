@@ -29,7 +29,7 @@ module.exports = async function(context, cb) {
 
   const preparedResults = pkgs
     .filter(checkIfPlugin)
-    .map(({ npmPackage }) => ({
+    .map(({ package: npmPackage }) => ({
       _id: npmPackage.name,
       _type: 'plugin',
       installWith: npmPackage.name.split('sanity-plugin-')[1],
